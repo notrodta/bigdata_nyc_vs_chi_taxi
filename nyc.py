@@ -1,4 +1,4 @@
-import sys
+#import sys
 
 from pyspark import SparkContext
 from pyspark.sql import SparkSession
@@ -257,15 +257,15 @@ def get_lowest_trip_day_nyc(num_of_days):
 
 
 if __name__ == '__main__':
-    reload(sys)
-    sys.setdefaultencoding('utf8')
+    # reload(sys)
+    # sys.setdefaultencoding('utf8')
 
     sc = SparkContext()
 
     spark = SparkSession(sc)
 
-    #nyc_taxi = sc.textFile('1000lines.csv').cache()
-    nyc_taxi = sc.textFile('/user/tlee000/2016_Green_Taxi_Trip_Data.csv')
+    nyc_taxi = sc.textFile('1000lines.csv').cache()
+    #nyc_taxi = sc.textFile('/user/tlee000/2016_Green_Taxi_Trip_Data.csv')
 
 
     nyc_taxi_sec = nyc_taxi.mapPartitionsWithIndex(get_nyc_taxi_trip_datetime).cache()
