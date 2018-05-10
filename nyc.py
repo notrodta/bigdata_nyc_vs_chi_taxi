@@ -1,4 +1,4 @@
-#import sys
+import sys
 
 from pyspark import SparkContext
 from pyspark.sql import SparkSession
@@ -257,8 +257,8 @@ def get_lowest_trip_day_nyc(num_of_days):
 
 
 if __name__ == '__main__':
-    # reload(sys)
-    # sys.setdefaultencoding('utf8')
+    reload(sys)
+    sys.setdefaultencoding('utf8')
 
     sc = SparkContext()
 
