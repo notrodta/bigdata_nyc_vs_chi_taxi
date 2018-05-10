@@ -1,4 +1,4 @@
-import sys
+#import sys
 
 from pyspark import SparkContext
 from pyspark.sql import SparkSession
@@ -172,9 +172,6 @@ def get_taxi_time_start_bracket_nyc():
             time_dict[time] = 0
         time_dict[time] += 1
 
-    time_dict
-
-    # print time_dict
 
     l = []
     for key, value in time_dict.items():
@@ -206,7 +203,6 @@ def get_trip_per_month_bracket_nyc():
             d[trip] = 0
         d[trip] += 1
 
-    # print time_dict
 
     l = []
     for key, value in d.items():
@@ -261,8 +257,8 @@ def get_lowest_trip_day_nyc(num_of_days):
 
 
 if __name__ == '__main__':
-    reload(sys)
-    sys.setdefaultencoding('utf8')
+    # reload(sys)
+    # sys.setdefaultencoding('utf8')
 
     sc = SparkContext()
 
@@ -272,8 +268,8 @@ if __name__ == '__main__':
     nyc_taxi = sc.textFile('/user/tlee000/2016_Green_Taxi_Trip_Data.csv')
 
 
-    # nyc_taxi_sec = nyc_taxi.mapPartitionsWithIndex(get_nyc_taxi_trip_datetime).cache()
-    # nyc_taxi_sec.take(10)
+    nyc_taxi_sec = nyc_taxi.mapPartitionsWithIndex(get_nyc_taxi_trip_datetime).cache()
+    nyc_taxi_sec.take(10)
 
     start_time_NYC = nyc_taxi.mapPartitionsWithIndex(get_trip_start_time_nyc).cache()
     start_time_NYC.take(10)
@@ -281,11 +277,11 @@ if __name__ == '__main__':
     nyc_taxi_tripmiles = nyc_taxi.mapPartitionsWithIndex(get_nyc_taxi_trip_miles)
     nyc_taxi_tripmiles = nyc_taxi_tripmiles.filter(lambda x: is_number(x))
     nyc_taxi_tripmiles.take(10)
-    #
-    # print(get_nyc_avg_mile())
 
-    # time_traveled_info_nyc = get_time_traveled_bracket_nyc()
-    # print(time_traveled_info_nyc)
+    print(get_nyc_avg_mile())
+
+    time_traveled_info_nyc = get_time_traveled_bracket_nyc()
+    print(time_traveled_info_nyc)
 
     nyc_taxi_tripmiles_nyc = get_dist_traveled_bracket_nyc()
     print(nyc_taxi_tripmiles_nyc)
