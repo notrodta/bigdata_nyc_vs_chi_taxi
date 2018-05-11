@@ -4,6 +4,7 @@ from pyspark import SparkContext
 from pyspark.sql import SparkSession
 
 from functools import reduce
+from operator import add
 
 def get_chi_taxi_trip_sec(pId, lines):
     import csv
@@ -48,32 +49,35 @@ def get_avg_mile_per_hour_chi():
 
 
 def get_time_traveled_bracket_chi():
-    dict = {'1': 0, '5': 0, '10': 0, '20': 0, '30': 0, '60': 0, '100': 0}
-    for sec in chi_taxi_sec.collect():
-        sec = int(sec)
-        if sec > 0 and sec < 60:  # 1 min
-            dict['1'] += 1
-        elif sec >= 60 and sec < 300:  # 5min
-            dict['5'] += 1
-        elif sec >= 300 and sec < 600:  # 10min
-            dict['10'] += 1
-        elif sec >= 600 and sec < 1200:  # 20min
-            dict['20'] += 1
-        elif sec >= 1200 and sec < 1800:  # 30min
-            dict['30'] += 1
-        elif sec >= 1800 and sec < 3600:  # 1hr
-            dict['60'] += 1
-        elif sec >= 3600:  # more than 1 hour
-            dict['100'] += 1
-
-    l = []
-
-    for key, value in dict.items():
-        l.append((int(key), int(value)))
-
-    l = sorted(l, key=lambda x: int(x[0]))
-
-    return l
+    nyc_time_bracket = chi_taxi_sec.map(lambda row: (row, 1)).reduceByKey(add)
+    nyc_time_bracket.take(1)
+    return nyc_time_bracket
+    # dict = {'1': 0, '5': 0, '10': 0, '20': 0, '30': 0, '60': 0, '100': 0}
+    # for sec in chi_taxi_sec.collect():
+    #     sec = int(sec)
+    #     if sec > 0 and sec < 60:  # 1 min
+    #         dict['1'] += 1
+    #     elif sec >= 60 and sec < 300:  # 5min
+    #         dict['5'] += 1
+    #     elif sec >= 300 and sec < 600:  # 10min
+    #         dict['10'] += 1
+    #     elif sec >= 600 and sec < 1200:  # 20min
+    #         dict['20'] += 1
+    #     elif sec >= 1200 and sec < 1800:  # 30min
+    #         dict['30'] += 1
+    #     elif sec >= 1800 and sec < 3600:  # 1hr
+    #         dict['60'] += 1
+    #     elif sec >= 3600:  # more than 1 hour
+    #         dict['100'] += 1
+    #
+    # l = []
+    #
+    # for key, value in dict.items():
+    #     l.append((int(key), int(value)))
+    #
+    # l = sorted(l, key=lambda x: int(x[0]))
+    #
+    # return l
 
 
 def get_dist_traveled_bracket_chi():
@@ -286,7 +290,7 @@ if __name__ == '__main__':
     # print(get_chi_taxi_trip_avg_sec())
     # print(get_chi_taxi_avg_mile())
     # print(get_avg_mile_per_hour_chi())
-    #print(get_time_traveled_bracket_chi())
+    print(get_time_traveled_bracket_chi())
     # print(get_dist_traveled_bracket_chi())
     #
     # companies = chi_taxi.mapPartitionsWithIndex(get_distinct_companies_chi).cache()
