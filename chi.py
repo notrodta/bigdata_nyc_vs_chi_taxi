@@ -161,6 +161,7 @@ def get_taxi_time_start_bracket_chi():
 
     st = start_time.map(lambda row: (row, 1)).reduceByKey(add)
     st = st.collect()
+    st = filter(lambda x: x[0].isdigit(), st)
     st = sorted(st, key=lambda x: int(x[0]))
     return st
     #
