@@ -195,21 +195,28 @@ def get_trip_per_month_chi(pId, lines):
 
 
 def get_trip_per_month_bracket_chi():
-    d = {}
+    trip_month = trip_per_month.map(lambda row: (row, 1)).reduceByKey(add)
+    trip_month = trip_month.collect()
+    st = filter(lambda x: x[0].isdigit(), trip_month)
+    st = sorted(st, key=lambda x: int(x[0]))
+    return st
 
-    for trip in trip_per_month.collect():
-        if trip not in d:
-            d[trip] = 0
-        d[trip] += 1
 
-    # print time_dict
-
-    l = []
-    for key, value in d.items():
-        l.append((key, value))
-
-    l = sorted(l, key=lambda x: int(x[0]))
-    return l
+    # d = {}
+    #
+    # for trip in trip_per_month.collect():
+    #     if trip not in d:
+    #         d[trip] = 0
+    #     d[trip] += 1
+    #
+    # # print time_dict
+    #
+    # l = []
+    # for key, value in d.items():
+    #     l.append((key, value))
+    #
+    # l = sorted(l, key=lambda x: int(x[0]))
+    # return l
 
 
 #-------
@@ -226,34 +233,46 @@ def get_trip_date_chi(pId, lines):
 
 
 def get_highest_trip_day_chi(num_of_days):
-    trip_dates = {}
-    for trip in trip_date.collect():
-        if trip not in trip_dates:
-            trip_dates[trip] = 0
-        trip_dates[trip] += 1
+    dates = trip_date.map(lambda row: (row, 1)).reduceByKey(add)
+    dates = dates.collect()
+    dates = filter(lambda x: x[0].isdigit(), dates)
+    dates = sorted(dates, key=lambda x: int(x[1]), reverse=True)
+    return dates
 
-    l = []
-    for key, value in trip_dates.items():
-        l.append((key, value))
-
-    # l = sorted(l,key=itemgetter(1),reverse=True)
-    l = sorted(l, key=lambda x: int(x[1]), reverse=True)
-    return l[:num_of_days]
+    # trip_dates = {}
+    # for trip in trip_date.collect():
+    #     if trip not in trip_dates:
+    #         trip_dates[trip] = 0
+    #     trip_dates[trip] += 1
+    #
+    # l = []
+    # for key, value in trip_dates.items():
+    #     l.append((key, value))
+    #
+    # # l = sorted(l,key=itemgetter(1),reverse=True)
+    # l = sorted(l, key=lambda x: int(x[1]), reverse=True)
+    # return l[:num_of_days]
 
 
 def get_lowest_trip_day_chi(num_of_days):
-    trip_dates = {}
-    for trip in trip_date.collect():
-        if trip not in trip_dates:
-            trip_dates[trip] = 0
-        trip_dates[trip] += 1
+    dates = trip_date.map(lambda row: (row, 1)).reduceByKey(add)
+    dates = dates.collect()
+    dates = filter(lambda x: x[0].isdigit(), dates)
+    dates = sorted(dates, key=lambda x: int(x[1]))
+    return dates
 
-    l = []
-    for key, value in trip_dates.items():
-        l.append((key, value))
-
-    l = sorted(l, key=lambda x: int(x[1]))
-    return l[:num_of_days]
+    # trip_dates = {}
+    # for trip in trip_date.collect():
+    #     if trip not in trip_dates:
+    #         trip_dates[trip] = 0
+    #     trip_dates[trip] += 1
+    #
+    # l = []
+    # for key, value in trip_dates.items():
+    #     l.append((key, value))
+    #
+    # l = sorted(l, key=lambda x: int(x[1]))
+    # return l[:num_of_days]
 
 
 
@@ -286,30 +305,30 @@ if __name__ == '__main__':
                         taxi11, taxi12])
 
 
-    chi_taxi_sec = chi_taxi.mapPartitionsWithIndex(get_chi_taxi_trip_sec).cache()
-    chi_taxi_sec = chi_taxi_sec.filter(lambda x: x.isdigit())
-    chi_taxi_sec.take(10)
-
-    chi_taxi_tripmiles = chi_taxi.mapPartitionsWithIndex(get_chi_taxi_trip_miles).cache()
-    chi_taxi_tripmiles = chi_taxi_tripmiles.filter(lambda x: is_number(x))
-    chi_taxi_tripmiles.take(10)
-
-    # print(get_chi_taxi_trip_avg_sec())
-    # print(get_chi_taxi_avg_mile())
-    # print(get_avg_mile_per_hour_chi())
-    print("time traveled:", get_time_traveled_bracket_chi())
-    print("distance traveled: ",get_dist_traveled_bracket_chi())
-
-    companies = chi_taxi.mapPartitionsWithIndex(get_distinct_companies_chi).cache()
-    companies = companies.distinct()
-    print(companies.count())
-    companies.take(10)
-
-    companies_business = chi_taxi.mapPartitionsWithIndex(get_company_business_record_chi).cache()
-    print(companies_business.count())
-    companies_business.take(10)
-
-    print("company business bracket: ", get_company_business_bracket())
+    # chi_taxi_sec = chi_taxi.mapPartitionsWithIndex(get_chi_taxi_trip_sec).cache()
+    # chi_taxi_sec = chi_taxi_sec.filter(lambda x: x.isdigit())
+    # chi_taxi_sec.take(10)
+    #
+    # chi_taxi_tripmiles = chi_taxi.mapPartitionsWithIndex(get_chi_taxi_trip_miles).cache()
+    # chi_taxi_tripmiles = chi_taxi_tripmiles.filter(lambda x: is_number(x))
+    # chi_taxi_tripmiles.take(10)
+    #
+    # # print(get_chi_taxi_trip_avg_sec())
+    # # print(get_chi_taxi_avg_mile())
+    # # print(get_avg_mile_per_hour_chi())
+    # print("time traveled:", get_time_traveled_bracket_chi())
+    # print("distance traveled: ",get_dist_traveled_bracket_chi())
+    #
+    # companies = chi_taxi.mapPartitionsWithIndex(get_distinct_companies_chi).cache()
+    # companies = companies.distinct()
+    # print(companies.count())
+    # companies.take(10)
+    #
+    # companies_business = chi_taxi.mapPartitionsWithIndex(get_company_business_record_chi).cache()
+    # print(companies_business.count())
+    # companies_business.take(10)
+    #
+    # print("company business bracket: ", get_company_business_bracket())
 
     start_time = chi_taxi.mapPartitionsWithIndex(get_trip_start_time_chi).cache()
     # active_drivers = active_drivers.filter(lambda x: x == '2017')
@@ -318,20 +337,20 @@ if __name__ == '__main__':
     start_time.take(10)
 
     print("taxi time start:", get_taxi_time_start_bracket_chi())
-    #
-    # trip_per_month = chi_taxi.mapPartitionsWithIndex(get_trip_per_month_chi).cache()
-    # trip_per_month.take(10)
-    #
-    # print(get_trip_per_month_bracket_chi())
-    #
-    # average_trip_a_day = chi_taxi.count() / 366
-    # print(average_trip_a_day)
-    #
-    # trip_date = chi_taxi.mapPartitionsWithIndex(get_trip_date_chi).cache()
-    # trip_date.take(10)
-    #
-    # print(get_highest_trip_day_chi(5))
-    # print(get_lowest_trip_day_chi(5))
+
+    trip_per_month = chi_taxi.mapPartitionsWithIndex(get_trip_per_month_chi).cache()
+    trip_per_month.take(10)
+
+    print(get_trip_per_month_bracket_chi())
+
+    average_trip_a_day = chi_taxi.count() / 366
+    print(average_trip_a_day)
+
+    trip_date = chi_taxi.mapPartitionsWithIndex(get_trip_date_chi).cache()
+    trip_date.take(10)
+
+    print(get_highest_trip_day_chi(5))
+    print(get_lowest_trip_day_chi(5))
 
     print("success")
 
