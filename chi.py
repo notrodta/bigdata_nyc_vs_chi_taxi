@@ -256,7 +256,24 @@ if __name__ == '__main__':
     spark = SparkSession(sc)
 
     #chi_taxi = sc.textFile('chicago_taxi_trips_2016_01.csv')
-    chi_taxi = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_01.csv')
+    #chi_taxi = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_01.csv')
+
+    taxi01 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_01.csv')
+    taxi02 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_02.csv')
+    taxi03 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_03.csv')
+    taxi04 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_04.csv')
+    taxi05 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_05.csv')
+    taxi06 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_06.csv')
+    taxi07 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_07.csv')
+    taxi08 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_08.csv')
+    taxi09 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_09.csv')
+    taxi10 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_10.csv')
+    taxi11 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_11.csv')
+    taxi12 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_12.csv')
+    chi_taxi = sc.union([taxi01, taxi02, taxi03, taxi04, taxi05,
+                        taxi06, taxi07, taxi08, taxi09, taxi10,
+                        taxi11, taxi12])
+
 
     chi_taxi_sec = chi_taxi.mapPartitionsWithIndex(get_chi_taxi_trip_sec).cache()
     chi_taxi_sec = chi_taxi_sec.filter(lambda x: x.isdigit())
@@ -266,44 +283,44 @@ if __name__ == '__main__':
     chi_taxi_tripmiles = chi_taxi_tripmiles.filter(lambda x: is_number(x))
     chi_taxi_tripmiles.take(10)
 
-    print(get_chi_taxi_trip_avg_sec())
-    print(get_chi_taxi_avg_mile())
-    print(get_avg_mile_per_hour_chi())
+    # print(get_chi_taxi_trip_avg_sec())
+    # print(get_chi_taxi_avg_mile())
+    # print(get_avg_mile_per_hour_chi())
     print(get_time_traveled_bracket_chi())
-    print(get_dist_traveled_bracket_chi())
-
-    companies = chi_taxi.mapPartitionsWithIndex(get_distinct_companies_chi).cache()
-    companies = companies.distinct()
-    print(companies.count())
-    companies.take(10)
-
-    companies_business = chi_taxi.mapPartitionsWithIndex(get_company_business_record_chi).cache()
-    print(companies_business.count())
-    companies_business.take(10)
-
-    print(get_company_business_bracket())
-
-    start_time = chi_taxi.mapPartitionsWithIndex(get_trip_start_time_chi).cache()
-    # active_drivers = active_drivers.filter(lambda x: x == '2017')
-    print(start_time.count())
-    print(type(start_time.take(10)[0]))
-    start_time.take(10)
-
-    print(get_taxi_time_start_bracket_chi())
-
-    trip_per_month = chi_taxi.mapPartitionsWithIndex(get_trip_per_month_chi).cache()
-    trip_per_month.take(10)
-
-    print(get_trip_per_month_bracket_chi())
-
-    average_trip_a_day = chi_taxi.count() / 366
-    print(average_trip_a_day)
-
-    trip_date = chi_taxi.mapPartitionsWithIndex(get_trip_date_chi).cache()
-    trip_date.take(10)
-
-    print(get_highest_trip_day_chi(5))
-    print(get_lowest_trip_day_chi(5))
+    # print(get_dist_traveled_bracket_chi())
+    #
+    # companies = chi_taxi.mapPartitionsWithIndex(get_distinct_companies_chi).cache()
+    # companies = companies.distinct()
+    # print(companies.count())
+    # companies.take(10)
+    #
+    # companies_business = chi_taxi.mapPartitionsWithIndex(get_company_business_record_chi).cache()
+    # print(companies_business.count())
+    # companies_business.take(10)
+    #
+    # print(get_company_business_bracket())
+    #
+    # start_time = chi_taxi.mapPartitionsWithIndex(get_trip_start_time_chi).cache()
+    # # active_drivers = active_drivers.filter(lambda x: x == '2017')
+    # print(start_time.count())
+    # print(type(start_time.take(10)[0]))
+    # start_time.take(10)
+    #
+    # print(get_taxi_time_start_bracket_chi())
+    #
+    # trip_per_month = chi_taxi.mapPartitionsWithIndex(get_trip_per_month_chi).cache()
+    # trip_per_month.take(10)
+    #
+    # print(get_trip_per_month_bracket_chi())
+    # 
+    # average_trip_a_day = chi_taxi.count() / 366
+    # print(average_trip_a_day)
+    #
+    # trip_date = chi_taxi.mapPartitionsWithIndex(get_trip_date_chi).cache()
+    # trip_date.take(10)
+    #
+    # print(get_highest_trip_day_chi(5))
+    # print(get_lowest_trip_day_chi(5))
 
     print("success")
 
