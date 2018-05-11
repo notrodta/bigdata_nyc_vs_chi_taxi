@@ -279,9 +279,9 @@ if __name__ == '__main__':
     chi_taxi_sec = chi_taxi_sec.filter(lambda x: x.isdigit())
     chi_taxi_sec.take(10)
 
-    # chi_taxi_tripmiles = chi_taxi.mapPartitionsWithIndex(get_chi_taxi_trip_miles).cache()
-    # chi_taxi_tripmiles = chi_taxi_tripmiles.filter(lambda x: is_number(x))
-    # chi_taxi_tripmiles.take(10)
+    chi_taxi_tripmiles = chi_taxi.mapPartitionsWithIndex(get_chi_taxi_trip_miles).cache()
+    chi_taxi_tripmiles = chi_taxi_tripmiles.filter(lambda x: is_number(x))
+    chi_taxi_tripmiles.take(10)
 
     # print(get_chi_taxi_trip_avg_sec())
     # print(get_chi_taxi_avg_mile())
