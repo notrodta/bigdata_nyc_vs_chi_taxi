@@ -279,14 +279,14 @@ if __name__ == '__main__':
     chi_taxi_sec = chi_taxi_sec.filter(lambda x: x.isdigit())
     chi_taxi_sec.take(10)
 
-    chi_taxi_tripmiles = chi_taxi.mapPartitionsWithIndex(get_chi_taxi_trip_miles).cache()
-    chi_taxi_tripmiles = chi_taxi_tripmiles.filter(lambda x: is_number(x))
-    chi_taxi_tripmiles.take(10)
+    # chi_taxi_tripmiles = chi_taxi.mapPartitionsWithIndex(get_chi_taxi_trip_miles).cache()
+    # chi_taxi_tripmiles = chi_taxi_tripmiles.filter(lambda x: is_number(x))
+    # chi_taxi_tripmiles.take(10)
 
     # print(get_chi_taxi_trip_avg_sec())
     # print(get_chi_taxi_avg_mile())
     # print(get_avg_mile_per_hour_chi())
-    print(get_time_traveled_bracket_chi())
+    #print(get_time_traveled_bracket_chi())
     # print(get_dist_traveled_bracket_chi())
     #
     # companies = chi_taxi.mapPartitionsWithIndex(get_distinct_companies_chi).cache()
@@ -312,7 +312,7 @@ if __name__ == '__main__':
     # trip_per_month.take(10)
     #
     # print(get_trip_per_month_bracket_chi())
-    # 
+    #
     # average_trip_a_day = chi_taxi.count() / 366
     # print(average_trip_a_day)
     #
