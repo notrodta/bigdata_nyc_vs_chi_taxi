@@ -258,31 +258,31 @@ def get_lowest_trip_day_chi(num_of_days):
 
 
 if __name__ == '__main__':
-    # reload(sys)
-    # sys.setdefaultencoding('utf8')
+    reload(sys)
+    sys.setdefaultencoding('utf8')
 
     sc = SparkContext()
 
     spark = SparkSession(sc)
 
-    chi_taxi = sc.textFile('chicago_taxi_trips_2016_01.csv')
+    #chi_taxi = sc.textFile('chicago_taxi_trips_2016_01.csv')
     # #chi_taxi = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_01.csv')
 
-    # taxi01 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_01.csv')
-    # taxi02 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_02.csv')
-    # taxi03 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_03.csv')
-    # taxi04 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_04.csv')
-    # taxi05 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_05.csv')
-    # taxi06 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_06.csv')
-    # taxi07 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_07.csv')
-    # taxi08 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_08.csv')
-    # taxi09 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_09.csv')
-    # taxi10 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_10.csv')
-    # taxi11 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_11.csv')
-    # taxi12 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_12.csv')
-    # chi_taxi = sc.union([taxi01, taxi02, taxi03, taxi04, taxi05,
-    #                     taxi06, taxi07, taxi08, taxi09, taxi10,
-    #                     taxi11, taxi12])
+    taxi01 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_01.csv')
+    taxi02 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_02.csv')
+    taxi03 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_03.csv')
+    taxi04 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_04.csv')
+    taxi05 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_05.csv')
+    taxi06 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_06.csv')
+    taxi07 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_07.csv')
+    taxi08 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_08.csv')
+    taxi09 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_09.csv')
+    taxi10 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_10.csv')
+    taxi11 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_11.csv')
+    taxi12 = sc.textFile('/user/tlee000/chicago_taxi_trips_2016_12.csv')
+    chi_taxi = sc.union([taxi01, taxi02, taxi03, taxi04, taxi05,
+                        taxi06, taxi07, taxi08, taxi09, taxi10,
+                        taxi11, taxi12])
 
 
     chi_taxi_sec = chi_taxi.mapPartitionsWithIndex(get_chi_taxi_trip_sec).cache()
