@@ -305,33 +305,32 @@ if __name__ == '__main__':
                         taxi11, taxi12])
 
 
-    # chi_taxi_sec = chi_taxi.mapPartitionsWithIndex(get_chi_taxi_trip_sec).cache()
-    # chi_taxi_sec = chi_taxi_sec.filter(lambda x: x.isdigit())
-    # chi_taxi_sec.take(10)
-    #
-    # chi_taxi_tripmiles = chi_taxi.mapPartitionsWithIndex(get_chi_taxi_trip_miles).cache()
-    # chi_taxi_tripmiles = chi_taxi_tripmiles.filter(lambda x: is_number(x))
-    # chi_taxi_tripmiles.take(10)
-    #
-    # # print(get_chi_taxi_trip_avg_sec())
-    # # print(get_chi_taxi_avg_mile())
-    # # print(get_avg_mile_per_hour_chi())
-    # print("time traveled:", get_time_traveled_bracket_chi())
-    # print("distance traveled: ",get_dist_traveled_bracket_chi())
-    #
-    # companies = chi_taxi.mapPartitionsWithIndex(get_distinct_companies_chi).cache()
-    # companies = companies.distinct()
-    # print(companies.count())
-    # companies.take(10)
-    #
-    # companies_business = chi_taxi.mapPartitionsWithIndex(get_company_business_record_chi).cache()
-    # print(companies_business.count())
-    # companies_business.take(10)
-    #
-    # print("company business bracket: ", get_company_business_bracket())
+    chi_taxi_sec = chi_taxi.mapPartitionsWithIndex(get_chi_taxi_trip_sec).cache()
+    chi_taxi_sec = chi_taxi_sec.filter(lambda x: x.isdigit())
+    chi_taxi_sec.take(10)
+
+    chi_taxi_tripmiles = chi_taxi.mapPartitionsWithIndex(get_chi_taxi_trip_miles).cache()
+    chi_taxi_tripmiles = chi_taxi_tripmiles.filter(lambda x: is_number(x))
+    chi_taxi_tripmiles.take(10)
+
+    # print(get_chi_taxi_trip_avg_sec())
+    # print(get_chi_taxi_avg_mile())
+    # print(get_avg_mile_per_hour_chi())
+    print("time traveled:", get_time_traveled_bracket_chi())
+    print("distance traveled: ",get_dist_traveled_bracket_chi())
+
+    companies = chi_taxi.mapPartitionsWithIndex(get_distinct_companies_chi).cache()
+    companies = companies.distinct()
+    print(companies.count())
+    companies.take(10)
+
+    companies_business = chi_taxi.mapPartitionsWithIndex(get_company_business_record_chi).cache()
+    print(companies_business.count())
+    companies_business.take(10)
+
+    print("company business bracket: ", get_company_business_bracket())
 
     start_time = chi_taxi.mapPartitionsWithIndex(get_trip_start_time_chi).cache()
-    # active_drivers = active_drivers.filter(lambda x: x == '2017')
     print(start_time.count())
     print(type(start_time.take(10)[0]))
     start_time.take(10)
