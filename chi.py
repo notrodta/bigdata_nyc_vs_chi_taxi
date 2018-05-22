@@ -321,18 +321,18 @@ if __name__ == '__main__':
 
     companies = chi_taxi.mapPartitionsWithIndex(get_distinct_companies_chi).cache()
     companies = companies.distinct()
-    print(companies.count())
+    #print(companies.count())
     companies.take(10)
 
     companies_business = chi_taxi.mapPartitionsWithIndex(get_company_business_record_chi).cache()
-    print(companies_business.count())
+    #print(companies_business.count())
     companies_business.take(10)
 
     print("company business bracket: ", get_company_business_bracket())
 
     start_time = chi_taxi.mapPartitionsWithIndex(get_trip_start_time_chi).cache()
-    print(start_time.count())
-    print(type(start_time.take(10)[0]))
+    #print("start time count: ", start_time.count())
+    #print(type(start_time.take(10)[0]))
     start_time.take(10)
 
     print("taxi time start:", get_taxi_time_start_bracket_chi())
@@ -340,16 +340,16 @@ if __name__ == '__main__':
     trip_per_month = chi_taxi.mapPartitionsWithIndex(get_trip_per_month_chi).cache()
     trip_per_month.take(10)
 
-    print(get_trip_per_month_bracket_chi())
+    print("get_trip_per_month_bracket_chi: ", get_trip_per_month_bracket_chi())
 
     average_trip_a_day = chi_taxi.count() / 366
-    print(average_trip_a_day)
+    print("average_trip_a_day: ", average_trip_a_day)
 
     trip_date = chi_taxi.mapPartitionsWithIndex(get_trip_date_chi).cache()
     trip_date.take(10)
 
-    print(get_highest_trip_day_chi(5))
-    print(get_lowest_trip_day_chi(5))
+    print("get_highest_trip_day_chi 5: ", get_highest_trip_day_chi(5))
+    print("get_lowest_trip_day_chi 5: ", get_lowest_trip_day_chi(5))
 
     print("success")
 
