@@ -358,41 +358,41 @@ if __name__ == '__main__':
     nyc_taxi = sc.textFile('/user/tlee000/2016_Green_Taxi_Trip_Data.csv')
 
 
-    nyc_taxi_sec = nyc_taxi.mapPartitionsWithIndex(get_nyc_taxi_trip_datetime).cache()
-    nyc_taxi_sec.take(10)
-
-    start_time_NYC = nyc_taxi.mapPartitionsWithIndex(get_trip_start_time_nyc).cache()
-    start_time_NYC.take(10)
-
-    nyc_taxi_tripmiles = nyc_taxi.mapPartitionsWithIndex(get_nyc_taxi_trip_miles)
-    nyc_taxi_tripmiles = nyc_taxi_tripmiles.filter(lambda x: is_number(x))
-    nyc_taxi_tripmiles.take(10)
-
-    print("nyc avg miles: ", get_nyc_avg_mile())
-
-    time_traveled_info_nyc = get_time_traveled_bracket_nyc()
-    print("time traveled info: ", time_traveled_info_nyc)
-
-    nyc_taxi_tripmiles_nyc = get_dist_traveled_bracket_nyc()
-    print("nyc_taxi_tripmiles_nyc: ", nyc_taxi_tripmiles_nyc)
-
-    nyc_time_bracket = start_time_NYC.map(lambda row: (row, 1)).reduceByKey(add)
-    nyc_time_bracket.take(1)
-
-    print("get_taxi_time_start_bracket_nyc: ", get_taxi_time_start_bracket_nyc())
-
-    trip_per_month_nyc = nyc_taxi.mapPartitionsWithIndex(get_trip_per_month_nyc).cache()
-    trip_per_month_nyc.take(10)
-
-    print("get_trip_per_month_bracket_nyc: ", get_trip_per_month_bracket_nyc())
-
-    print("average_trip_a_day_chi = ", nyc_taxi.count()/366)
-
-    trip_date_nyc = nyc_taxi.mapPartitionsWithIndex(get_trip_date_nyc).cache()
-    trip_date_nyc.take(10)
-
-    print("get_highest_trip_day_nyc: ", get_highest_trip_day_nyc(5))
-
-    print("get_highest_trip_day_nyc: ", get_lowest_trip_day_nyc(5))
-
-    print("success")
+    # nyc_taxi_sec = nyc_taxi.mapPartitionsWithIndex(get_nyc_taxi_trip_datetime).cache()
+    # nyc_taxi_sec.take(10)
+    #
+    # start_time_NYC = nyc_taxi.mapPartitionsWithIndex(get_trip_start_time_nyc).cache()
+    # start_time_NYC.take(10)
+    #
+    # nyc_taxi_tripmiles = nyc_taxi.mapPartitionsWithIndex(get_nyc_taxi_trip_miles)
+    # nyc_taxi_tripmiles = nyc_taxi_tripmiles.filter(lambda x: is_number(x))
+    # nyc_taxi_tripmiles.take(10)
+    #
+    # print("nyc avg miles: ", get_nyc_avg_mile())
+    #
+    # time_traveled_info_nyc = get_time_traveled_bracket_nyc()
+    # print("time traveled info: ", time_traveled_info_nyc)
+    #
+    # nyc_taxi_tripmiles_nyc = get_dist_traveled_bracket_nyc()
+    # print("nyc_taxi_tripmiles_nyc: ", nyc_taxi_tripmiles_nyc)
+    #
+    # nyc_time_bracket = start_time_NYC.map(lambda row: (row, 1)).reduceByKey(add)
+    # nyc_time_bracket.take(1)
+    #
+    # print("get_taxi_time_start_bracket_nyc: ", get_taxi_time_start_bracket_nyc())
+    #
+    # trip_per_month_nyc = nyc_taxi.mapPartitionsWithIndex(get_trip_per_month_nyc).cache()
+    # trip_per_month_nyc.take(10)
+    #
+    # print("get_trip_per_month_bracket_nyc: ", get_trip_per_month_bracket_nyc())
+    #
+    # print("average_trip_a_day_chi = ", nyc_taxi.count()/366)
+    #
+    # trip_date_nyc = nyc_taxi.mapPartitionsWithIndex(get_trip_date_nyc).cache()
+    # trip_date_nyc.take(10)
+    #
+    # print("get_highest_trip_day_nyc: ", get_highest_trip_day_nyc(5))
+    #
+    # print("get_highest_trip_day_nyc: ", get_lowest_trip_day_nyc(5))
+    #
+    # print("success")
