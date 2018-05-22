@@ -7,18 +7,6 @@ from functools import reduce
 from operator import add
 
 
-# def get_nyc_taxi_trip_datetime(pId, lines):
-#     import csv
-#     if pId == 0:
-#         next(lines)
-#     for row in csv.reader(lines):
-#         if row[1] != "" and row[2] != "":
-#             #yield row[1][:19], row[2][:19]
-#             try:
-#                 yield row[1], row[2]
-#             except:
-#                 pass
-
 def convert_to_military_time_NoMonthAndYear(time):
     from datetime import datetime
     return datetime.strptime(time, '%I:%M:%S %p').strftime('%H')
@@ -121,33 +109,6 @@ def get_time_traveled_bracket_nyc():
     dates = sorted(dates, key=lambda x: int(x[0]))
     return dates
 
-
-    # dict = {'1': 0, '5': 0, '10': 0, '20': 0, '30': 0, '60': 0, '100': 0}
-    # for sec in nyc_taxi_sec.collect():
-    #     #         print sec
-    #     if sec > 0 and sec < 60:  # 1 min
-    #         dict['1'] += 1
-    #     elif sec >= 60 and sec < 300:  # 5min
-    #         dict['5'] += 1
-    #     elif sec >= 300 and sec < 600:  # 10min
-    #         dict['10'] += 1
-    #     elif sec >= 600 and sec < 1200:  # 20min
-    #         dict['20'] += 1
-    #     elif sec >= 1200 and sec < 1800:  # 30min
-    #         dict['30'] += 1
-    #     elif sec >= 1800 and sec < 3600:  # 1hr
-    #         dict['60'] += 1
-    #     elif sec >= 3600:  # more than 1 hour
-    #         dict['100'] += 1
-    #
-    # l = []
-    #
-    # for key, value in dict.items():
-    #     l.append((int(key), int(value)))
-    #
-    # l = sorted(l, key=lambda x: int(x[0]))
-    #
-    # return l
 
 
 def dist_traveled_bracket(m):
@@ -329,7 +290,7 @@ def get_lowest_trip_day_nyc(num_of_days):
     dates = filter(lambda x: x[0].isdigit(), dates)
     dates = sorted(dates, key=lambda x: int(x[1]))
     return dates
-    
+
 
     # trip_date = {}
     # for trip in trip_date_nyc.collect():
