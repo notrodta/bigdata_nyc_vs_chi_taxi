@@ -366,19 +366,19 @@ if __name__ == '__main__':
     nyc_taxi_tripmiles = nyc_taxi_tripmiles.filter(lambda x: is_number(x))
     nyc_taxi_tripmiles.take(10)
 
-    print("nyc avg miles: ", get_nyc_avg_mile())
+   # print("nyc avg miles: ", get_nyc_avg_mile())
 
-    # time_traveled_info_nyc = get_time_traveled_bracket_nyc()
-    # print("time traveled info: ", time_traveled_info_nyc)
-    #
-    # nyc_taxi_tripmiles_nyc = get_dist_traveled_bracket_nyc()
-    # print(nyc_taxi_tripmiles_nyc)
-    #
-    # nyc_time_bracket = start_time_NYC.map(lambda row: (row, 1)).reduceByKey(add)
-    # nyc_time_bracket.take(1)
-    #
-    # print(get_taxi_time_start_bracket_nyc())
-    #
+    time_traveled_info_nyc = get_time_traveled_bracket_nyc()
+    print("time traveled info: ", time_traveled_info_nyc)
+
+    nyc_taxi_tripmiles_nyc = get_dist_traveled_bracket_nyc()
+    print(nyc_taxi_tripmiles_nyc)
+
+    nyc_time_bracket = start_time_NYC.map(lambda row: (row, 1)).reduceByKey(add)
+    nyc_time_bracket.take(1)
+
+    print(get_taxi_time_start_bracket_nyc())
+
     # trip_per_month_nyc = nyc_taxi.mapPartitionsWithIndex(get_trip_per_month_nyc).cache()
     # trip_per_month_nyc.take(10)
     #
