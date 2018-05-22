@@ -117,7 +117,7 @@ def time_bracket_bracket(sec):
 def get_time_traveled_bracket_nyc():
     dates = nyc_taxi_sec.map(lambda row: (time_bracket_bracket(row), 1)).reduceByKey(add)
     dates = dates.collect()
-    dates = filter(lambda x: x[0].isdigit(), dates)
+    dates = filter(lambda x: str(x[0]).isdigit(), dates)
     dates = sorted(dates, key=lambda x: int(x[0]))
     return dates
 
@@ -181,7 +181,7 @@ def dist_traveled_bracket(m):
 def get_dist_traveled_bracket_nyc():
     dates = nyc_taxi_tripmiles.map(lambda row: (dist_traveled_bracket(row), 1)).reduceByKey(add)
     dates = dates.collect()
-    dates = filter(lambda x: x[0].isdigit(), dates)
+    dates = filter(lambda x: str(x[0]).isdigit(), dates)
     dates = sorted(dates, key=lambda x: int(x[0]))
     return dates
 
@@ -230,7 +230,7 @@ def get_taxi_time_start_bracket_nyc():
 
     dates = start_time_NYC.map(lambda row: (row, 1)).reduceByKey(add)
     dates = dates.collect()
-    dates = filter(lambda x: x[0].isdigit(), dates)
+    dates = filter(lambda x: str(x[0]).isdigit(), dates)
     dates = sorted(dates, key=lambda x: int(x[0]))
     return dates
 
@@ -267,7 +267,7 @@ def get_trip_per_month_nyc(pId, lines):
 def get_trip_per_month_bracket_nyc():
     trip_per_month = trip_per_month_nyc.map(lambda row: (row, 1)).reduceByKey(add)
     trip_per_month = trip_per_month.collect()
-    trip_per_month = filter(lambda x: x[0].isdigit(), trip_per_month)
+    trip_per_month = filter(lambda x: str(x[0]).isdigit(), trip_per_month)
     trip_per_month = sorted(trip_per_month, key=lambda x: int(x[0]))
     return trip_per_month
 
@@ -303,7 +303,7 @@ def get_trip_date_nyc(pId, lines):
 def get_highest_trip_day_nyc(num_of_days):
     dates = trip_date_nyc.map(lambda row: (row, 1)).reduceByKey(add)
     dates = dates.collect()
-    dates = filter(lambda x: x[0].isdigit(), dates)
+    dates = filter(lambda x: str(x[0]).isdigit(), dates)
     dates = sorted(dates, key=lambda x: int(x[1]), reverse=True)
     return dates
 
@@ -326,7 +326,7 @@ def get_highest_trip_day_nyc(num_of_days):
 def get_lowest_trip_day_nyc(num_of_days):
     dates = trip_date_nyc.map(lambda row: (row, 1)).reduceByKey(add)
     dates = dates.collect()
-    dates = filter(lambda x: x[0].isdigit(), dates)
+    dates = filter(lambda x: str(x[0]).isdigit(), dates)
     dates = sorted(dates, key=lambda x: int(x[1]))
     return dates
 
@@ -366,7 +366,7 @@ if __name__ == '__main__':
     nyc_taxi_tripmiles = nyc_taxi_tripmiles.filter(lambda x: is_number(x))
     nyc_taxi_tripmiles.take(10)
 
-   # print("nyc avg miles: ", get_nyc_avg_mile())
+    print("nyc avg miles: ", get_nyc_avg_mile())
 
     time_traveled_info_nyc = get_time_traveled_bracket_nyc()
     print("time traveled info: ", time_traveled_info_nyc)
@@ -379,18 +379,18 @@ if __name__ == '__main__':
 
     print(get_taxi_time_start_bracket_nyc())
 
-    # trip_per_month_nyc = nyc_taxi.mapPartitionsWithIndex(get_trip_per_month_nyc).cache()
-    # trip_per_month_nyc.take(10)
-    #
-    # print(get_trip_per_month_bracket_nyc())
-    #
-    # print("average_trip_a_day_chi = ", nyc_taxi.count() / 366)
-    #
-    # trip_date_nyc = nyc_taxi.mapPartitionsWithIndex(get_trip_date_nyc).cache()
-    # trip_date_nyc.take(10)
-    #
-    # print(get_highest_trip_day_nyc(5))
-    #
-    # print(get_lowest_trip_day_nyc(5))
-    #
-    # print("success")
+    trip_per_month_nyc = nyc_taxi.mapPartitionsWithIndex(get_trip_per_month_nyc).cache()
+    trip_per_month_nyc.take(10)
+
+    print(get_trip_per_month_bracket_nyc())
+
+    print("average_trip_a_day_chi = ", nyc_taxi.count() / 366)
+
+    trip_date_nyc = nyc_taxi.mapPartitionsWithIndex(get_trip_date_nyc).cache()
+    trip_date_nyc.take(10)
+
+    print(get_highest_trip_day_nyc(5))
+
+    print(get_lowest_trip_day_nyc(5))
+
+    print("success")
